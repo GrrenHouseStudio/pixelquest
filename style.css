@@ -4218,9 +4218,8 @@ footer{
     background:
         linear-gradient(
             90deg,
-            rgba(8, 13, 25, 0.96) 0%,
-            rgba(8, 13, 25, 0.80) 55%,
-            rgba(8, 13, 25, 0.60) 100%
+            rgba(8, 13, 25, 0.94),
+            rgba(8, 13, 25, 0.62)
         ),
         url("images/full/spiderman/spiderman1.png");
 
