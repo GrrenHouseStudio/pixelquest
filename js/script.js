@@ -25,7 +25,12 @@ const loadMoreBtn =
 // Load wallpapers.json
 // ======================================
 
-fetch("wallpapers.json")
+const wallpapersPath =
+    window.location.pathname.includes("/pages/")
+        ? "../wallpapers.json"
+        : "wallpapers.json";
+
+fetch(wallpapersPath)
     .then(response => {
 
         if (!response.ok) {
