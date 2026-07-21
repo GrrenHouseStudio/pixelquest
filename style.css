@@ -4216,14 +4216,19 @@ footer{
     padding: 76px 0 48px;
 
     background:
-        radial-gradient(
-            circle at top left,
-            rgba(124, 92, 255, 0.12),
-            transparent 38%
-        );
+        linear-gradient(
+            90deg,
+            rgba(8, 13, 25, 0.96) 0%,
+            rgba(8, 13, 25, 0.80) 55%,
+            rgba(8, 13, 25, 0.60) 100%
+        ),
+        url("images/social-preview.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
 }
-
 .category-page-hero-content {
 
     max-width: 850px;
