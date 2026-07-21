@@ -30,7 +30,11 @@ const wallpapersPath =
         ? "../wallpapers.json"
         : "wallpapers.json";
 
-fetch(wallpapersPath)
+fetch(
+    window.location.pathname.includes("/pages/")
+        ? "../wallpapers.json"
+        : "wallpapers.json"
+)
     .then(response => {
 
         if (!response.ok) {
