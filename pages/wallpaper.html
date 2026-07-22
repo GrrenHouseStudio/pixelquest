@@ -49,39 +49,97 @@
 </head>
 
 <body>
+<!-- ================= HEADER ================= -->
 
-    <!-- ================= HEADER ================= -->
+<header class="site-header">
 
-    <header class="site-header">
+    <div class="container header-container">
 
-        <div class="container header-container">
+        <a
+            href="../index.html"
+            class="logo"
+        >
+            🎮 PixelQuest
+        </a>
 
-            <a href="../index.html" class="logo">
-                🎮 PixelQuest
+        <nav class="desktop-nav">
+
+            <a href="../index.html">
+                Home
             </a>
 
-            <nav class="main-nav">
+            <a href="../index.html#latest">
+                Wallpapers
+            </a>
 
-                <a href="../index.html">Home</a>
+            <a href="../index.html#games">
+                Games
+            </a>
 
-                <a href="../index.html#latest">
-                    Wallpapers
-                </a>
+            <a href="category.html">
+                Categories
+            </a>
 
-                <a href="../index.html#games">
-                    Games
-                </a>
+            <a href="../index.html#featured">
+                Featured
+            </a>
 
-                <a href="../index.html#about">
-                    About
-                </a>
+            <a href="about.html">
+                About
+            </a>
 
-            </nav>
+        </nav>
 
-        </div>
+        <button
+            class="mobile-menu-button"
+            id="mobile-menu-button"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+        >
 
-    </header>
+            <span></span>
+            <span></span>
+            <span></span>
 
+        </button>
+
+    </div>
+
+    <nav
+        class="mobile-nav"
+        id="mobile-nav"
+        aria-hidden="true"
+    >
+
+        <a href="../index.html">
+            🏠 Home
+        </a>
+
+        <a href="../index.html#latest">
+            🖼 Wallpapers
+        </a>
+
+        <a href="../index.html#games">
+            🎮 Games
+        </a>
+
+        <a href="category.html">
+            🗂 Categories
+        </a>
+
+        <a href="../index.html#featured">
+            ⭐ Featured
+        </a>
+
+        <a href="about.html">
+            ℹ About
+        </a>
+
+    </nav>
+
+</header>
+    
 
     <!-- ================= WALLPAPER DETAILS ================= -->
 
@@ -151,8 +209,9 @@
 
     </footer>
 
-    <script src="../js/utils.js"></script>
-<script src="../js/wallpaper.js"></script>
+    <script src="../js/utils.js" defer></script>
+<script src="../js/script.js" defer></script>
+<script src="../js/wallpaper.js" defer></script>
 
 </body>
 
