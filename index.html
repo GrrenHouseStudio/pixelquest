@@ -3,12 +3,6 @@
 
 <head>
 
-    <link
-    rel="icon"
-    type="image/png"
-    href="images/favicon.png"
->
-
     <meta charset="UTF-8">
 
     <meta
@@ -32,6 +26,13 @@
         href="https://pixelquestwallpapers.com/"
     >
 
+    <!-- Favicon -->
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="images/favicon.png"
+    >
 
     <!-- Open Graph sharing -->
 
@@ -60,7 +61,6 @@
         content="https://pixelquestwallpapers.com/images/social-preview.jpg"
     >
 
-
     <!-- Twitter / X sharing -->
 
     <meta
@@ -82,7 +82,6 @@
         name="twitter:image"
         content="https://pixelquestwallpapers.com/images/social-preview.jpg"
     >
-
 
     <!-- Styles -->
 
@@ -107,31 +106,56 @@
         rel="stylesheet"
     >
 
-    <!-- JSON-LD SCHEMA -->
+    <!-- JSON-LD Schema -->
 
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "PixelQuest",
-      "url": "https://pixelquestwallpapers.com/",
-      "description": "Download free HD and 2K gaming wallpapers for desktop, laptop and mobile.",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://pixelquestwallpapers.com/pages/search.html?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "PixelQuest",
+        "url": "https://pixelquestwallpapers.com/",
+        "description": "Download free HD and 2K gaming wallpapers for desktop, laptop and mobile.",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://pixelquestwallpapers.com/pages/search.html?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
     }
     </script>
 
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "PixelQuest",
-      "url": "https://pixelquestwallpapers.com/",
-      "logo": "https://pixelquestwallpapers.com/images/favicon.png"
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "PixelQuest",
+        "url": "https://pixelquestwallpapers.com/",
+        "logo": "https://pixelquestwallpapers.com/images/favicon.png"
     }
+    </script>
+
+    <!-- Google Analytics -->
+
+    <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-TD5LSX45Y0"
+    ></script>
+
+    <script>
+
+        window.dataLayer =
+            window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag("js", new Date());
+
+        gtag(
+            "config",
+            "G-TD5LSX45Y0"
+        );
+
     </script>
 
 </head>
@@ -142,282 +166,247 @@
 
     <header class="site-header">
 
-    <div class="container header-container">
+        <div class="container header-container">
 
-        <a href="/" class="logo">
-            🎮 PixelQuest
-        </a>
+            <a
+                href="/"
+                class="logo"
+            >
+                🎮 PixelQuest
+            </a>
 
-        <nav class="desktop-nav">
+            <nav class="desktop-nav">
 
-            <a href="index.html">Home</a>
+                <a href="/">
+                    Home
+                </a>
 
-            <a href="#latest">Wallpapers</a>
+                <a href="#latest">
+                    Wallpapers
+                </a>
 
-            <a href="#games">Games</a>
+                <a href="#games">
+                    Games
+                </a>
 
-            <a href="pages/category.html">Categories</a>
+                <a href="pages/category.html">
+                    Categories
+                </a>
 
-            <a href="#featured-wallpapers">Featured</a>
+                <a href="#featured">
+                    Featured
+                </a>
 
-            <a href="pages/about.html">About</a>
+                <a href="pages/about.html">
+                    About
+                </a>
+
+            </nav>
+
+            <button
+                class="mobile-menu-button"
+                id="mobile-menu-button"
+                type="button"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+        </div>
+
+        <nav
+            class="mobile-nav"
+            id="mobile-nav"
+            aria-hidden="true"
+        >
+
+            <a href="/">
+                🏠 Home
+            </a>
+
+            <a href="#latest">
+                🖼 Wallpapers
+            </a>
+
+            <a href="#games">
+                🎮 Games
+            </a>
+
+            <a href="pages/category.html">
+                🗂 Categories
+            </a>
+
+            <a href="#featured">
+                ⭐ Featured
+            </a>
+
+            <a href="pages/about.html">
+                ℹ About
+            </a>
 
         </nav>
 
-        <button
-            class="mobile-menu-button"
-            id="mobile-menu-button"
-            type="button"
-            aria-label="Open navigation menu"
-            aria-expanded="false"
-        >
+    </header>
 
-            <span></span>
-            <span></span>
-            <span></span>
+    <!-- ================= HERO ================= -->
 
-        </button>
+    <section class="hero">
 
-    </div>
+        <div class="container hero-container">
 
-    <nav
-        class="mobile-nav"
-        id="mobile-nav"
-        aria-hidden="true"
-    >
+            <div class="hero-text">
 
-        <a href="index.html">
-            🏠 Home
-        </a>
+                <span class="hero-tag">
+                    🎮 Free Gaming Wallpaper Collection
+                </span>
 
-        <a href="#latest">
-            🖼 Wallpapers
-        </a>
+                <h1>
+                    Download Free
+                    <span>Full HD & 2K</span>
+                    Gaming Wallpapers
+                </h1>
 
-        <a href="#games">
-            🎮 Games
-        </a>
+                <p class="hero-description">
+                    Download free HD and 2K gaming wallpapers for desktop,
+                    laptop and mobile. Explore PUBG, Spider-Man,
+                    Ghost of Tsushima, Forza Horizon and more.
+                </p>
 
-        <a href="pages/category.html">
-        🗂 Categories
-        </a>
+                <div class="search-box">
 
-        <a href="#featured-wallpapers">
-            ⭐ Featured
-        </a>
-
-        <a href="pages/about.html">
-            ℹ About
-        </a>
-
-    </nav>
-
-</header>
-
-<!-- ================= HERO ================= -->
-
-<section class="hero">
-
-    <div class="container hero-container">
-
-        <div class="hero-text">
-
-            <span class="hero-tag">
-                🎮 Free Gaming Wallpaper Collection
-            </span>
-
-            <h1>
-                Download Free
-                <span>Full HD & 2k</span>
-                Gaming Wallpapers
-            </h1>
-
-            <p class="hero-description">
-                Download free HD and 2K gaming wallpapers for desktop, laptop and mobile. Explore PUBG, Spider-Man, Ghost of Tsushima, Forza Horizon and more.
-            </p>
-
-            <div class="search-box">
-
-                <input
-                    type="text"
-                    placeholder="Search PUBG, Spider-Man, Forza..."
-                    aria-label="Search gaming wallpapers"
-                >
-
-                <button type="button">
-                    🔍 Search
-                </button>
-
-            </div>
-
-            <div class="hero-popular">
-
-    <strong>Popular:</strong>
-
-    <div id="hero-popular-games"></div>
-
-</div>
-
-            <!-- Dynamic Hero Statistics -->
-
-            <div class="hero-stats">
-
-                <div class="hero-stat">
-
-                    <span
-                        class="hero-stat-number"
-                        id="wallpaper-count"
+                    <input
+                        type="text"
+                        placeholder="Search PUBG, Spider-Man, Forza..."
+                        aria-label="Search gaming wallpapers"
                     >
-                        0
-                    </span>
 
-                    <span class="hero-stat-label">
-                        Wallpapers
-                    </span>
+                    <button type="button">
+                        🔍 Search
+                    </button>
 
                 </div>
 
-                <div class="hero-stat-divider"></div>
+                <div class="hero-popular">
 
-                <div class="hero-stat">
+                    <strong>
+                        Popular:
+                    </strong>
 
-                    <span
-                        class="hero-stat-number"
-                        id="game-count"
-                    >
-                        0
-                    </span>
-
-                    <span class="hero-stat-label">
-                        Games
-                    </span>
+                    <div id="hero-popular-games"></div>
 
                 </div>
 
-                <div class="hero-stat-divider"></div>
+                <!-- Dynamic Hero Statistics -->
 
-                <div class="hero-stat">
+                <div class="hero-stats">
 
-                    <span
-                        class="hero-stat-number"
-                        id="download-count"
-                    >
-                        0
-                    </span>
+                    <div class="hero-stat">
 
-                    <span class="hero-stat-label">
-                        Downloads
-                    </span>
+                        <span
+                            class="hero-stat-number"
+                            id="wallpaper-count"
+                        >
+                            0
+                        </span>
+
+                        <span class="hero-stat-label">
+                            Wallpapers
+                        </span>
+
+                    </div>
+
+                    <div class="hero-stat-divider"></div>
+
+                    <div class="hero-stat">
+
+                        <span
+                            class="hero-stat-number"
+                            id="game-count"
+                        >
+                            0
+                        </span>
+
+                        <span class="hero-stat-label">
+                            Games
+                        </span>
+
+                    </div>
+
+                    <div class="hero-stat-divider"></div>
+
+                    <div class="hero-stat">
+
+                        <span
+                            class="hero-stat-number"
+                            id="download-count"
+                        >
+                            0
+                        </span>
+
+                        <span class="hero-stat-label">
+                            Downloads
+                        </span>
+
+                    </div>
 
                 </div>
 
             </div>
-
-        </div>
-
-        <div class="hero-featured" id="hero-featured-card">
-
-    <div class="hero-featured-image">
-
-        <img
-            id="hero-featured-image"
-            src="images/thumbnail/ghostoftsushima/got1.webp"
-            alt="Featured gaming wallpaper"
-            decoding="async"
-            fetchpriority="high"
-            width="640"
-            height="360"
-        >
-
-        <span
-            class="hero-resolution"
-            id="hero-featured-resolution"
-        >
-            1920×1080
-        </span>
-
-    </div>
-
-    <div class="hero-featured-info">
-
-        <span>
-            Featured Wallpaper
-        </span>
-
-        <h2 id="hero-featured-title">
-            Ghost of Tsushima
-        </h2>
-
-        <p id="hero-featured-details">
-            Action Adventure • Desktop
-        </p>
-
-        <a
-            href="#featured"
-            class="hero-view-button"
-            id="hero-featured-link"
-        >
-            View Wallpaper
-        </a>
-
-    </div>
-
-</div>
-
-    </div>
-
-</section>
-
-<!-- ================= TRENDING GAMES ================= -->
-
-<section class="trending-games" id="games">
-
-    <div class="container">
-
-        <div class="section-title">
-
-            <h2>🎮 Trending Games</h2>
-
-            <a href="#latest" class="view-all">
-                Browse Wallpapers →
-            </a>
-
-        </div>
-
-        <!-- JavaScript loads trending games here -->
-
-        <div class="games-grid" id="games-grid">
-
-        </div>
-
-    </div>
-
-</section>
-
-
-    <!-- ================= FEATURED WALLPAPERS ================= -->
-
-    <section class="featured" id="featured">
-
-        <div class="container">
-
-            <div class="section-title">
-
-                <h2>🔥 Featured Wallpapers</h2>
-
-                <a href="#latest" class="view-all">
-
-                    View All →
-
-                </a>
-
-            </div>
-
-            <!-- JavaScript loads featured wallpapers here -->
 
             <div
-                id="featured-wallpapers"
-                class="wallpaper-grid">
+                class="hero-featured"
+                id="hero-featured-card"
+            >
+
+                <div class="hero-featured-image">
+
+                    <img
+                        id="hero-featured-image"
+                        src="images/thumbnail/ghostoftsushima/got1.webp"
+                        alt="Featured gaming wallpaper"
+                        decoding="async"
+                        fetchpriority="high"
+                        width="640"
+                        height="360"
+                    >
+
+                    <span
+                        class="hero-resolution"
+                        id="hero-featured-resolution"
+                    >
+                        1920×1080
+                    </span>
+
+                </div>
+
+                <div class="hero-featured-info">
+
+                    <span>
+                        Featured Wallpaper
+                    </span>
+
+                    <h2 id="hero-featured-title">
+                        Ghost of Tsushima
+                    </h2>
+
+                    <p id="hero-featured-details">
+                        Action Adventure • Desktop
+                    </p>
+
+                    <a
+                        href="#featured"
+                        class="hero-view-button"
+                        id="hero-featured-link"
+                    >
+                        View Wallpaper
+                    </a>
+
+                </div>
 
             </div>
 
@@ -425,6 +414,71 @@
 
     </section>
 
+    <!-- ================= TRENDING GAMES ================= -->
+
+    <section
+        class="trending-games"
+        id="games"
+    >
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <h2>
+                    🎮 Trending Games
+                </h2>
+
+                <a
+                    href="#latest"
+                    class="view-all"
+                >
+                    Browse Wallpapers →
+                </a>
+
+            </div>
+
+            <div
+                class="games-grid"
+                id="games-grid"
+            ></div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= FEATURED WALLPAPERS ================= -->
+
+    <section
+        class="featured"
+        id="featured"
+    >
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <h2>
+                    🔥 Featured Wallpapers
+                </h2>
+
+                <a
+                    href="#latest"
+                    class="view-all"
+                >
+                    View All →
+                </a>
+
+            </div>
+
+            <div
+                id="featured-wallpapers"
+                class="wallpaper-grid"
+            ></div>
+
+        </div>
+
+    </section>
 
     <!-- ================= ADVERTISEMENT ================= -->
 
@@ -435,15 +489,11 @@
             <div class="ad-box">
 
                 <span>
-
                     Advertisement
-
                 </span>
 
                 <small>
-
                     Google AdSense responsive banner will appear here
-
                 </small>
 
             </div>
@@ -452,59 +502,70 @@
 
     </section>
 
-
     <!-- ================= LATEST WALLPAPERS ================= -->
 
-    <section class="latest" id="latest">
+    <section
+        class="latest"
+        id="latest"
+    >
 
         <div class="container">
 
             <div class="section-header">
 
-    <h2>🆕 Latest Wallpapers</h2>
+                <h2>
+                    🆕 Latest Wallpapers
+                </h2>
 
-    <div class="sort-control">
+                <div class="sort-control">
 
-    <span class="sort-label">
-        Sort by
-    </span>
+                    <span class="sort-label">
+                        Sort by
+                    </span>
 
-    <div class="sort-select-wrapper">
+                    <div class="sort-select-wrapper">
 
-        <select id="sort-select">
+                        <select
+                            id="sort-select"
+                            aria-label="Sort wallpapers"
+                        >
 
-            <option value="newest">Newest</option>
+                            <option value="newest">
+                                Newest
+                            </option>
 
-            <option value="downloads">Most Downloaded</option>
+                            <option value="downloads">
+                                Most Downloaded
+                            </option>
 
-            <option value="views">Most Viewed</option>
+                            <option value="views">
+                                Most Viewed
+                            </option>
 
-            <option value="az">A - Z</option>
+                            <option value="az">
+                                A - Z
+                            </option>
 
-        </select>
+                        </select>
 
-    </div>
+                    </div>
 
-</div>
+                </div>
 
-</div>
-
-            <!-- JavaScript loads latest wallpapers here -->
+            </div>
 
             <div
                 id="latest-wallpapers"
-                class="wallpaper-grid">
-
-            </div>
+                class="wallpaper-grid"
+            ></div>
 
             <div class="load-more">
 
                 <button
                     id="loadMoreBtn"
-                    type="button">
-
+                    type="button"
+                >
                     Load More Wallpapers
-
                 </button>
 
             </div>
@@ -513,85 +574,107 @@
 
     </section>
 
-<!-- ================= ABOUT PIXELQUEST ================= -->
+    <!-- ================= ABOUT PIXELQUEST ================= -->
 
-<section class="about-section" id="about">
+    <section
+        class="about-section"
+        id="about"
+    >
 
-    <div class="container">
+        <div class="container">
 
-        <div class="about-grid">
+            <div class="about-grid">
 
-            <div class="about-content">
+                <div class="about-content">
 
-                <span class="section-label">
-                    About PixelQuest
-                </span>
+                    <span class="section-label">
+                        About PixelQuest
+                    </span>
 
-                <h2>
-                    Gaming Wallpapers Captured by Real Gamers
-                </h2>
+                    <h2>
+                        Gaming Wallpapers Captured by Real Gamers
+                    </h2>
 
-                <p>
-                    PixelQuest is a growing collection of gaming wallpapers
-                    captured from popular PC and console games. Our goal is to
-                    help gamers discover clean, high-quality wallpapers for
-                    desktop, laptop, and mobile devices.
-                </p>
+                    <p>
+                        PixelQuest is a growing collection of gaming
+                        wallpapers captured from popular PC and console
+                        games. Our goal is to help gamers discover clean,
+                        high-quality wallpapers for desktop, laptop and
+                        mobile devices.
+                    </p>
 
-                <p>
-                    New wallpapers are added regularly from games like PUBG,
-                    Spider-Man, Ghost of Tsushima, Forza Horizon, Crimson Desert,
-                    and many more.
-                </p>
+                    <p>
+                        New wallpapers are added regularly from games like
+                        PUBG, Spider-Man, Ghost of Tsushima, Forza Horizon,
+                        Crimson Desert and many more.
+                    </p>
 
-                <a href="#latest" class="about-button">
-                    Explore Wallpapers
-                </a>
+                    <a
+                        href="#latest"
+                        class="about-button"
+                    >
+                        Explore Wallpapers
+                    </a>
+
+                </div>
+
+                <div class="about-stats">
+
+                    <div class="stat-card">
+
+                        <strong>
+                            Full HD & 2K
+                        </strong>
+
+                        <span>
+                            High Quality
+                        </span>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <strong>
+                            Mobile
+                        </strong>
+
+                        <span>
+                            Responsive Design
+                        </span>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <strong>
+                            Fast
+                        </strong>
+
+                        <span>
+                            Easy Downloads
+                        </span>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <strong>
+                            Free
+                        </strong>
+
+                        <span>
+                            For Gamers
+                        </span>
+
+                    </div>
+
+                </div>
 
             </div>
 
-            <div class="about-stats">
-
-    <div class="stat-card">
-
-        <strong>Full HD & 2k</strong>
-
-        <span>High Quality</span>
-
-    </div>
-
-    <div class="stat-card">
-
-        <strong>Mobile</strong>
-
-        <span>Responsive Design</span>
-
-    </div>
-
-    <div class="stat-card">
-
-        <strong>Fast</strong>
-
-        <span>Easy Downloads</span>
-
-    </div>
-
-    <div class="stat-card">
-
-        <strong>Free</strong>
-
-        <span>For Gamers</span>
-
-    </div>
-
-</div>
-
         </div>
 
-    </div>
-
-</section>
-
+    </section>
 
     <!-- ================= SECOND ADVERTISEMENT ================= -->
 
@@ -602,15 +685,11 @@
             <div class="ad-box">
 
                 <span>
-
                     Advertisement
-
                 </span>
 
                 <small>
-
                     A second responsive advertisement can appear here later
-
                 </small>
 
             </div>
@@ -619,103 +698,146 @@
 
     </section>
 
-<!-- ================= FOOTER ================= -->
+    <!-- ================= FOOTER ================= -->
 
-<footer>
+    <footer>
 
-    <div class="container">
+        <div class="container">
 
-        <div class="footer-grid">
+            <div class="footer-grid">
 
-            <div class="footer-brand">
+                <div class="footer-brand">
 
-                <a href="/" class="footer-logo">
-                    🎮 PixelQuest
-                </a>
+                    <a
+                        href="/"
+                        class="footer-logo"
+                    >
+                        🎮 PixelQuest
+                    </a>
+
+                    <p>
+                        Free gaming wallpapers for desktop, laptop and
+                        mobile. Discover new screenshots and game-inspired
+                        backgrounds.
+                    </p>
+
+                </div>
+
+                <div class="footer-column">
+
+                    <h3>
+                        Explore
+                    </h3>
+
+                    <a href="/">
+                        Home
+                    </a>
+
+                    <a href="#latest">
+                        Latest Wallpapers
+                    </a>
+
+                    <a href="pages/category.html">
+                        Categories
+                    </a>
+
+                    <a href="#featured">
+                        Featured
+                    </a>
+
+                    <a href="#games">
+                        Games
+                    </a>
+
+                </div>
+
+                <div class="footer-column">
+
+                    <h3>
+                        Popular Games
+                    </h3>
+
+                    <a href="#latest">
+                        PUBG
+                    </a>
+
+                    <a href="#latest">
+                        Spider-Man 2
+                    </a>
+
+                    <a href="#latest">
+                        Ghost of Tsushima
+                    </a>
+
+                    <a href="#latest">
+                        Forza Horizon 6
+                    </a>
+
+                </div>
+
+                <div class="footer-column">
+
+                    <h3>
+                        Information
+                    </h3>
+
+                    <a href="pages/about.html">
+                        About
+                    </a>
+
+                    <a href="pages/privacy.html">
+                        Privacy Policy
+                    </a>
+
+                    <a href="pages/terms.html">
+                        Terms
+                    </a>
+
+                    <a href="pages/contact.html">
+                        Contact
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
 
                 <p>
-                    Free gaming wallpapers for desktop, laptop, and mobile.
-                    Discover new screenshots and game-inspired backgrounds.
+                    © 2026 PixelQuest. All rights reserved.
+                </p>
+
+                <p>
+                    Made for gamers worldwide.
                 </p>
 
             </div>
 
-            <div class="footer-column">
-
-                <h3>Explore</h3>
-
-                <a href="index.html">Home</a>
-
-                <a href="#latest">Latest Wallpapers</a>
-
-                <a href="pages/category.html">Categories</a>
-
-                <a href="#featured">Featured</a>
-
-                <a href="#games">Games</a>
-
-            </div>
-
-            <div class="footer-column">
-
-                <h3>Popular Games</h3>
-
-                <a href="#latest">PUBG</a>
-
-                <a href="#latest">Spider-Man 2</a>
-
-                <a href="#latest">Ghost of Tsushima</a>
-
-                <a href="#latest">Forza Horizon 6</a>
-
-            </div>
-
-            <div class="footer-column">
-
-    <h3>Information</h3>
-
-    <a href="pages/about.html">About</a>
-
-    <a href="pages/privacy.html">Privacy Policy</a>
-
-    <a href="pages/terms.html">Terms</a>
-
-    <a href="pages/contact.html">Contact</a>
-
-</div>
-
         </div>
 
-        <div class="footer-bottom">
+    </footer>
 
-            <p>
-                © 2026 PixelQuest. All rights reserved.
-            </p>
+    <!-- ================= BACK TO TOP ================= -->
 
-            <p>
-                Made for gamers worldwide.
-            </p>
+    <button
+        class="back-to-top"
+        id="back-to-top"
+        type="button"
+        aria-label="Back to top"
+        title="Back to top"
+    >
+        ↑
+    </button>
 
-        </div>
+    <script
+        src="js/utils.js"
+        defer
+    ></script>
 
-    </div>
-
-</footer>
-
-<!-- ================= BACK TO TOP ================= -->
-
-<button
-    class="back-to-top"
-    id="back-to-top"
-    type="button"
-    aria-label="Back to top"
-    title="Back to top"
->
-    ↑
-</button>
-
-<script src="js/utils.js" defer></script>
-<script src="js/script.js" defer></script>
+    <script
+        src="js/script.js"
+        defer
+    ></script>
 
 </body>
 
