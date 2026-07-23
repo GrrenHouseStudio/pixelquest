@@ -149,27 +149,24 @@ nav a:hover{
    Hero
 =========================================== */
 
-.hero{
+.hero {
 
-    padding:120px 0;
+    padding: 120px 0;
 
-    text-align:center;
+    text-align: center;
 
     background:
+        linear-gradient(
+            rgba(11, 15, 25, 0.88),
+            rgba(11, 15, 25, 0.92)
+        ),
+        url("images/thumbnail/spiderman/spiderman1.webp");
 
-    linear-gradient(
+    background-size: cover;
 
-    rgba(11,15,25,.88),
+    background-position: center;
 
-    rgba(11,15,25,.92)
-
-    ),
-
-    url("images/full/spiderman/spiderman1.png");
-
-    background-size:cover;
-
-    background-position:center;
+    background-repeat: no-repeat;
 
 }
 
