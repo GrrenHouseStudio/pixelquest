@@ -558,7 +558,7 @@ margin-bottom:20px;
             rgba(8,12,22,.90) 48%,
             rgba(8,12,22,.72) 100%
         ),
-        url("images/full/spiderman/spiderman1.png");
+        url("images/thumbnail/spiderman/spiderman1.webp")url("images/thumbnail/spiderman/spiderman1.webp");
 
     background-size:cover;
     background-position:center;
@@ -4218,7 +4218,7 @@ footer{
             rgba(8, 13, 25, 0.94),
             rgba(8, 13, 25, 0.62)
         ),
-        url("images/full/spiderman/spiderman1.png");
+        url("images/thumbnail/spiderman/spiderman1.webp");
 
     background-size: cover;
     background-position: center;
