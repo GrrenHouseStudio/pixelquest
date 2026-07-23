@@ -1,397 +1,611 @@
-// ======================================
-// PixelQuest Wallpaper Details Page
-// ======================================
+"use strict";
 
-const detailsContainer =
-    document.getElementById("wallpaper-details");
+/* =========================================
+   PIXELQUEST WALLPAPER DETAILS PAGE
+========================================= */
 
-const relatedContainer =
-    document.getElementById("related-wallpapers");
+document.addEventListener("DOMContentLoaded", loadWallpaperPage);
 
-const pageParameters =
-    new URLSearchParams(window.location.search);
+async function loadWallpaperPage() {
+    const detailsContainer =
+        document.getElementById("wallpaper-details");
 
-const wallpaperId =
-    Number(pageParameters.get("id"));
+    const relatedContainer =
+        document.getElementById("related-wallpapers");
 
-fetch("../wallpapers.json")
-    .then(response => {
+    if (!detailsContainer) {
+        return;
+    }
+
+    try {
+        const response = await fetch("../wallpapers.json");
 
         if (!response.ok) {
-            throw new Error("Could not load wallpapers.json");
+            throw new Error(
+                `Could not load wallpapers.json: ${response.status}`
+            );
         }
 
-        return response.json();
+        const wallpapers = await response.json();
 
-    })
-    .then(wallpapers => {
-
-        const wallpaper =
-            wallpapers.find(item => item.id === wallpaperId);
-
-        if (!wallpaper) {
-
-            showWallpaperNotFound();
-
-            return;
-
+        if (!Array.isArray(wallpapers)) {
+            throw new Error(
+                "wallpapers.json must contain an array."
+            );
         }
 
-        displayWallpaperDetails(wallpaper);
+        const wallpaperId = getWallpaperId();
 
-        displayRelatedWallpapers(
-            wallpapers,
-            wallpaper
+        const wallpaper = wallpapers.find(
+            (item) =>
+                String(item.id) === String(wallpaperId)
         );
 
-        updatePageInformation(wallpaper);
-
-    })
-    .catch(error => {
-
-        console.error(error);
-
-        if (detailsContainer) {
-
-            detailsContainer.innerHTML = `
-
-                <div class="page-message">
-
-                    <h1>Wallpaper could not be loaded</h1>
-
-                    <p>
-                        Please return to the homepage and try again.
-                    </p>
-
-                    <a href="../index.html" class="details-home-btn">
-                        Return Home
-                    </a>
-
-                </div>
-
-            `;
-
+        if (!wallpaper) {
+            showWallpaperNotFound(detailsContainer);
+            return;
         }
 
-    });
+        updatePageMetadata(wallpaper);
+
+        renderWallpaperDetails(
+            wallpaper,
+            detailsContainer
+        );
+
+        renderRelatedWallpapers(
+            wallpaper,
+            wallpapers,
+            relatedContainer
+        );
+
+    } catch (error) {
+        console.error(error);
+
+        detailsContainer.innerHTML = `
+            <div class="category-empty-message">
+
+                <h1>
+                    Could Not Load Wallpaper
+                </h1>
+
+                <p>
+                    The wallpaper information could not be loaded.
+                    Please refresh the page and try again.
+                </p>
+
+                <a
+                    href="../#latest"
+                    class="about-button"
+                >
+                    Browse Wallpapers
+                </a>
+
+            </div>
+        `;
+    }
+}
 
 
-// ======================================
-// Display wallpaper details
-// ======================================
+/* =========================================
+   GET WALLPAPER ID FROM URL
+========================================= */
 
-function displayWallpaperDetails(wallpaper) {
+function getWallpaperId() {
+    const urlParameters =
+        new URLSearchParams(window.location.search);
 
-    if (!detailsContainer) return;
+    return urlParameters.get("id");
+}
 
-    detailsContainer.innerHTML = `
+
+/* =========================================
+   RENDER WALLPAPER DETAILS
+========================================= */
+
+function renderWallpaperDetails(
+    wallpaper,
+    container
+) {
+    const title =
+        escapeHtml(wallpaper.title || "Gaming Wallpaper");
+
+    const game =
+        escapeHtml(wallpaper.game || "Unknown Game");
+
+    const category =
+        escapeHtml(wallpaper.category || "Gaming");
+
+    const resolution =
+        escapeHtml(wallpaper.resolution || "HD");
+
+    const date =
+        escapeHtml(wallpaper.date || "Not available");
+
+    const views =
+        Number(wallpaper.views || 0).toLocaleString();
+
+    const downloads =
+        Number(wallpaper.downloads || 0).toLocaleString();
+
+    /*
+        IMPORTANT:
+
+        wallpaper.thumbnail is displayed on the page.
+
+        wallpaper.image is used only by the download button.
+    */
+
+    const previewPath =
+        getPageAssetPath(wallpaper.thumbnail);
+
+    const originalPath =
+        getPageAssetPath(wallpaper.image);
+
+    const downloadFilename =
+        createDownloadFilename(wallpaper);
+
+    container.innerHTML = `
 
         <article class="wallpaper-detail-card">
 
-            <div class="detail-image-wrapper">
+            <nav
+                class="breadcrumbs"
+                aria-label="Breadcrumb"
+            >
+
+                <a href="../">
+                    Home
+                </a>
+
+                <span>
+                    ›
+                </span>
+
+                <a href="game.html?game=${encodeURIComponent(
+                    wallpaper.game || ""
+                )}">
+                    ${game}
+                </a>
+
+                <span>
+                    ›
+                </span>
+
+                <strong>
+                    ${title}
+                </strong>
+
+            </nav>
+
+            <div class="wallpaper-preview">
 
                 <img
-                    src="../${wallpaper.image}"
-                    alt="${wallpaper.title}"
-                    class="detail-main-image">
+                    src="${previewPath}"
+                    alt="${title} gaming wallpaper preview"
+                    class="wallpaper-main-image"
+                    id="wallpaper-preview-image"
+                    width="1280"
+                    height="720"
+                    decoding="async"
+                    fetchpriority="high"
+                    draggable="false"
+                >
 
-                <span class="detail-resolution">
-                    ${wallpaper.resolution}
+                <span class="wallpaper-resolution-badge">
+                    ${resolution}
                 </span>
 
             </div>
 
-            <div class="detail-content">
+            <div class="wallpaper-detail-content">
 
-                <p class="detail-category">
-                    ${wallpaper.category}
-                </p>
+                <span class="section-label">
+                    ${category}
+                </span>
 
                 <h1>
-                    ${wallpaper.title}
+                    ${title}
                 </h1>
 
-                <p class="detail-game">
-                    From ${wallpaper.game}
+                <p class="wallpaper-game-name">
+                    From ${game}
                 </p>
 
-                <div class="detail-info-grid">
+                <div class="wallpaper-information-grid">
 
-                    <div class="detail-info-box">
+                    <div class="wallpaper-information-card">
 
-                        <span>Resolution</span>
+                        <span>
+                            Resolution
+                        </span>
 
                         <strong>
-                            ${wallpaper.resolution}
+                            ${resolution}
                         </strong>
 
                     </div>
 
-                    <div class="detail-info-box">
+                    <div class="wallpaper-information-card">
 
-                        <span>Views</span>
+                        <span>
+                            Views
+                        </span>
 
                         <strong>
-                            ${wallpaper.views}
+                            ${views}
                         </strong>
 
                     </div>
 
-                    <div class="detail-info-box">
+                    <div class="wallpaper-information-card">
 
-                        <span>Downloads</span>
+                        <span>
+                            Downloads
+                        </span>
 
-                        <strong>
-                            ${wallpaper.downloads}
+                        <strong id="wallpaper-download-count">
+                            ${downloads}
                         </strong>
 
                     </div>
 
-                    <div class="detail-info-box">
+                    <div class="wallpaper-information-card">
 
-                        <span>Date Added</span>
+                        <span>
+                            Date Added
+                        </span>
 
                         <strong>
-                            ${wallpaper.date}
+                            ${date}
                         </strong>
 
                     </div>
 
                 </div>
 
-                <div class="detail-actions">
-
-                    <button
-                        class="detail-download-btn"
-                        data-image="../${wallpaper.image}"
-                        data-title="${wallpaper.title}">
-
-                        ⬇ Download Wallpaper
-
-                    </button>
+                <div class="wallpaper-action-buttons">
 
                     <a
-                        href="../index.html#latest"
-                        class="details-home-btn">
+                        href="${originalPath}"
+                        download="${downloadFilename}"
+                        class="download-button"
+                        id="full-resolution-download"
+                    >
+                        ⬇ Download Full-Resolution Wallpaper
+                    </a>
 
+                    <a
+                        href="game.html?game=${encodeURIComponent(
+                            wallpaper.game || ""
+                        )}"
+                        class="secondary-button"
+                    >
                         Browse More
-
                     </a>
 
                 </div>
 
+                <p class="download-quality-note">
+                    The image displayed above is an optimized preview.
+                    The Download button provides the original
+                    ${resolution} wallpaper.
+                </p>
+
             </div>
 
         </article>
-
     `;
 
+    setupDownloadTracking(wallpaper);
 }
 
 
-// ======================================
-// Display related wallpapers
-// ======================================
+/* =========================================
+   DOWNLOAD TRACKING
+========================================= */
 
-function displayRelatedWallpapers(
-    wallpapers,
-    currentWallpaper
+function setupDownloadTracking(wallpaper) {
+    const downloadButton =
+        document.getElementById(
+            "full-resolution-download"
+        );
+
+    if (!downloadButton) {
+        return;
+    }
+
+    downloadButton.addEventListener(
+        "click",
+        function () {
+            trackDownloadWithGoogleAnalytics(
+                wallpaper
+            );
+        }
+    );
+}
+
+
+function trackDownloadWithGoogleAnalytics(
+    wallpaper
 ) {
+    if (typeof window.gtag !== "function") {
+        return;
+    }
 
-    if (!relatedContainer) return;
+    window.gtag(
+        "event",
+        "wallpaper_download",
+        {
+            wallpaper_id:
+                String(wallpaper.id || ""),
+
+            wallpaper_title:
+                wallpaper.title || "",
+
+            game:
+                wallpaper.game || "",
+
+            category:
+                wallpaper.category || "",
+
+            resolution:
+                wallpaper.resolution || ""
+        }
+    );
+}
+
+
+/* =========================================
+   RELATED WALLPAPERS
+========================================= */
+
+function renderRelatedWallpapers(
+    currentWallpaper,
+    allWallpapers,
+    container
+) {
+    if (!container) {
+        return;
+    }
 
     const relatedWallpapers =
-        wallpapers
-            .filter(item =>
-                item.id !== currentWallpaper.id &&
-                (
-                    item.game === currentWallpaper.game ||
-                    item.category === currentWallpaper.category
-                )
-            )
+        allWallpapers
+            .filter((wallpaper) => {
+                const isDifferentWallpaper =
+                    String(wallpaper.id) !==
+                    String(currentWallpaper.id);
+
+                const sameGame =
+                    wallpaper.game ===
+                    currentWallpaper.game;
+
+                const sameCategory =
+                    wallpaper.category ===
+                    currentWallpaper.category;
+
+                return (
+                    isDifferentWallpaper &&
+                    (sameGame || sameCategory)
+                );
+            })
             .slice(0, 4);
 
-    relatedContainer.innerHTML = "";
-
     if (relatedWallpapers.length === 0) {
-
-        relatedContainer.innerHTML = `
-
-            <p class="no-related-wallpapers">
-                No related wallpapers found.
+        container.innerHTML = `
+            <p class="category-empty-message">
+                No related wallpapers are available yet.
             </p>
-
         `;
 
         return;
-
     }
 
-    relatedWallpapers.forEach(item => {
-
-        relatedContainer.innerHTML += `
-
-            <article class="wallpaper-card">
-
-                <a
-                    href="wallpaper.html?id=${item.id}"
-                    class="wallpaper-image">
-
-                    <img
-                        src="../${item.thumbnail}"
-                        alt="${item.title}"
-                        loading="lazy">
-
-                    <div class="image-gradient"></div>
-
-                    <span class="badge">
-                        ${item.resolution}
-                    </span>
-
-                </a>
-
-                <div class="wallpaper-content">
-
-                    <div class="wallpaper-heading">
-
-                        <div>
-
-                            <h3>
-                                ${item.title}
-                            </h3>
-
-                            <p>
-                                ${item.game}
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    <div class="wallpaper-meta">
-
-                        <span>
-                            👁 ${item.views}
-                        </span>
-
-                        <span>
-                            ⬇ ${item.downloads}
-                        </span>
-
-                    </div>
-
-                    <div class="card-buttons">
-
-                        <a
-                            href="wallpaper.html?id=${item.id}"
-                            class="details-btn">
-
-                            View Wallpaper
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-        `;
-
-    });
-
+    container.innerHTML =
+        relatedWallpapers
+            .map(createRelatedWallpaperCard)
+            .join("");
 }
 
 
-// ======================================
-// Wallpaper not found
-// ======================================
+function createRelatedWallpaperCard(wallpaper) {
+    const title =
+        escapeHtml(wallpaper.title || "Gaming Wallpaper");
 
-function showWallpaperNotFound() {
+    const game =
+        escapeHtml(wallpaper.game || "Gaming");
 
-    if (!detailsContainer) return;
+    const resolution =
+        escapeHtml(wallpaper.resolution || "HD");
 
-    detailsContainer.innerHTML = `
+    const thumbnailPath =
+        getPageAssetPath(wallpaper.thumbnail);
 
-        <div class="page-message">
+    return `
 
-            <h1>Wallpaper Not Found</h1>
+        <article class="wallpaper-card">
 
-            <p>
-                The wallpaper may have been removed or the link is incorrect.
-            </p>
+            <a
+                href="wallpaper.html?id=${encodeURIComponent(
+                    wallpaper.id
+                )}"
+                class="wallpaper-card-image"
+            >
 
-            <a href="../index.html" class="details-home-btn">
-                Return Home
+                <img
+                    src="${thumbnailPath}"
+                    alt="${title}"
+                    loading="lazy"
+                    decoding="async"
+                    width="640"
+                    height="360"
+                >
+
+                <span class="resolution-badge">
+                    ${resolution}
+                </span>
+
             </a>
 
-        </div>
+            <div class="wallpaper-card-content">
 
+                <span class="wallpaper-game">
+                    ${game}
+                </span>
+
+                <h3>
+
+                    <a
+                        href="wallpaper.html?id=${encodeURIComponent(
+                            wallpaper.id
+                        )}"
+                    >
+                        ${title}
+                    </a>
+
+                </h3>
+
+                <a
+                    href="wallpaper.html?id=${encodeURIComponent(
+                        wallpaper.id
+                    )}"
+                    class="card-view-button"
+                >
+                    View Wallpaper
+                </a>
+
+            </div>
+
+        </article>
     `;
-
 }
 
 
-// ======================================
-// Update browser page information
-// ======================================
+/* =========================================
+   UPDATE PAGE SEO
+========================================= */
 
-function updatePageInformation(wallpaper) {
+function updatePageMetadata(wallpaper) {
+    const title =
+        wallpaper.title || "Gaming Wallpaper";
+
+    const game =
+        wallpaper.game || "Gaming";
+
+    const resolution =
+        wallpaper.resolution || "HD";
 
     document.title =
-        `${wallpaper.title} | PixelQuest`;
+        `${title} ${resolution} Wallpaper | PixelQuest`;
 
     const description =
+        `Download ${title}, a free ${resolution} ` +
+        `${game} wallpaper for desktop, laptop and mobile.`;
+
+    let metaDescription =
         document.querySelector(
             'meta[name="description"]'
         );
 
-    if (description) {
+    if (!metaDescription) {
+        metaDescription =
+            document.createElement("meta");
 
-        description.content =
-            `Download ${wallpaper.title} from ${wallpaper.game} in ${wallpaper.resolution} resolution.`;
+        metaDescription.setAttribute(
+            "name",
+            "description"
+        );
 
+        document.head.appendChild(
+            metaDescription
+        );
     }
 
+    metaDescription.setAttribute(
+        "content",
+        description
+    );
 }
 
 
-// ======================================
-// Download wallpaper
-// ======================================
+/* =========================================
+   HELPERS
+========================================= */
 
-document.addEventListener(
-    "click",
-    function (event) {
-
-        const downloadButton =
-            event.target.closest(
-                ".detail-download-btn"
-            );
-
-        if (!downloadButton) return;
-
-        const image =
-            downloadButton.dataset.image;
-
-        const title =
-            downloadButton.dataset.title;
-
-        const link =
-            document.createElement("a");
-
-        link.href = image;
-
-        link.download =
-            title
-                .toLowerCase()
-                .replaceAll(" ", "-");
-
-        document.body.appendChild(link);
-
-        link.click();
-
-        link.remove();
-
+function getPageAssetPath(path) {
+    if (!path) {
+        return "";
     }
-);
+
+    if (
+        path.startsWith("http://") ||
+        path.startsWith("https://") ||
+        path.startsWith("../")
+    ) {
+        return path;
+    }
+
+    return `../${path}`;
+}
+
+
+function createDownloadFilename(wallpaper) {
+    const title =
+        String(
+            wallpaper.title ||
+            "pixelquest-wallpaper"
+        )
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+
+    const originalPath =
+        String(wallpaper.image || "");
+
+    const extensionMatch =
+        originalPath.match(/\.([a-zA-Z0-9]+)$/);
+
+    const extension =
+        extensionMatch
+            ? extensionMatch[1]
+            : "png";
+
+    return `${title}.${extension}`;
+}
+
+
+function showWallpaperNotFound(container) {
+    container.innerHTML = `
+
+        <div class="category-empty-message">
+
+            <h1>
+                Wallpaper Not Found
+            </h1>
+
+            <p>
+                The wallpaper may have been removed,
+                or the page address may be incorrect.
+            </p>
+
+            <a
+                href="../#latest"
+                class="about-button"
+            >
+                Browse All Wallpapers
+            </a>
+
+        </div>
+    `;
+}
+
+
+function escapeHtml(value) {
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
