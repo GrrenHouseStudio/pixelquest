@@ -719,35 +719,52 @@ const mobileNav =
 
 if (mobileMenuButton && mobileNav) {
 
-    mobileMenuButton.addEventListener("click", function () {
+    mobileMenuButton.addEventListener(
+        "click",
+        function () {
 
-        const isOpen =
-            mobileNav.classList.toggle("active");
+            const isOpen =
+                mobileNav.classList.toggle("active");
 
-        mobileMenuButton.classList.toggle(
-            "active",
-            isOpen
-        );
+            mobileMenuButton.classList.toggle(
+                "active",
+                isOpen
+            );
 
-        mobileMenuButton.setAttribute(
-            "aria-expanded",
-            String(isOpen)
-        );
+            mobileMenuButton.setAttribute(
+                "aria-expanded",
+                String(isOpen)
+            );
 
-        mobileMenuButton.setAttribute(
-            "aria-label",
-            isOpen
-                ? "Close navigation menu"
-                : "Open navigation menu"
-        );
+            mobileMenuButton.setAttribute(
+                "aria-label",
+                isOpen
+                    ? "Close navigation menu"
+                    : "Open navigation menu"
+            );
 
-        mobileNav.setAttribute(
-            "aria-hidden",
-            String(!isOpen)
-        );
+            mobileNav.setAttribute(
+                "aria-hidden",
+                String(!isOpen)
+            );
 
-    });
+            if (isOpen) {
 
+                mobileNav.removeAttribute("inert");
+
+            } else {
+
+                mobileNav.setAttribute(
+                    "inert",
+                    ""
+                );
+
+            }
+
+        }
+    );
+
+}
 
     /* Close menu after clicking a link */
 
