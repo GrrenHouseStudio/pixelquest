@@ -719,6 +719,8 @@ const mobileNav =
 
 if (mobileMenuButton && mobileNav) {
 
+    /* Open and close menu */
+
     mobileMenuButton.addEventListener(
         "click",
         function () {
@@ -764,7 +766,6 @@ if (mobileMenuButton && mobileNav) {
         }
     );
 
-}
 
     /* Close menu after clicking a link */
 
@@ -773,55 +774,84 @@ if (mobileMenuButton && mobileNav) {
 
     mobileNavLinks.forEach(function (link) {
 
-        link.addEventListener("click", function () {
+        link.addEventListener(
+            "click",
+            function () {
 
-            mobileNav.classList.remove("active");
+                mobileNav.classList.remove(
+                    "active"
+                );
 
-            mobileMenuButton.classList.remove("active");
+                mobileMenuButton.classList.remove(
+                    "active"
+                );
 
-            mobileMenuButton.setAttribute(
-                "aria-expanded",
-                "false"
-            );
+                mobileMenuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
 
-            mobileMenuButton.setAttribute(
-                "aria-label",
-                "Open navigation menu"
-            );
+                mobileMenuButton.setAttribute(
+                    "aria-label",
+                    "Open navigation menu"
+                );
 
-            mobileNav.setAttribute(
-                "aria-hidden",
-                "true"
-            );
+                mobileNav.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
 
-        });
+                mobileNav.setAttribute(
+                    "inert",
+                    ""
+                );
+
+            }
+        );
 
     });
 
 
     /* Close menu when switching to desktop */
 
-    window.addEventListener("resize", function () {
+    window.addEventListener(
+        "resize",
+        function () {
 
-        if (window.innerWidth > 768) {
+            if (window.innerWidth > 768) {
 
-            mobileNav.classList.remove("active");
+                mobileNav.classList.remove(
+                    "active"
+                );
 
-            mobileMenuButton.classList.remove("active");
+                mobileMenuButton.classList.remove(
+                    "active"
+                );
 
-            mobileMenuButton.setAttribute(
-                "aria-expanded",
-                "false"
-            );
+                mobileMenuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
 
-            mobileNav.setAttribute(
-                "aria-hidden",
-                "true"
-            );
+                mobileMenuButton.setAttribute(
+                    "aria-label",
+                    "Open navigation menu"
+                );
+
+                mobileNav.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+                mobileNav.setAttribute(
+                    "inert",
+                    ""
+                );
+
+            }
 
         }
-
-    });
+    );
 
 }
 /* ======================================
