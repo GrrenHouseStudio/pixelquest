@@ -20,11 +20,14 @@ const pageParameters =
 const selectedGame =
     pageParameters.get("game");
 
+
 fetch("../wallpapers.json")
     .then(response => {
 
         if (!response.ok) {
-            throw new Error("Could not load wallpapers.json");
+            throw new Error(
+                "Could not load wallpapers.json"
+            );
         }
 
         return response.json();
@@ -42,7 +45,8 @@ fetch("../wallpapers.json")
 
         const gameWallpapers =
             wallpapers.filter(item =>
-                item.game.toLowerCase() ===
+                String(item.game)
+                    .toLowerCase() ===
                 selectedGame.toLowerCase()
             );
 
@@ -84,44 +88,69 @@ fetch("../wallpapers.json")
 
 function displayGameHero(gameWallpapers) {
 
-    if (!gameHero) return;
+    if (!gameHero) {
+        return;
+    }
 
     const featuredWallpaper =
-        gameWallpapers.find(item => item.featured) ||
-        gameWallpapers[0];
+        gameWallpapers.find(
+            item => item.featured
+        ) || gameWallpapers[0];
 
     const gameName =
         featuredWallpaper.game;
+
+    /*
+        IMPORTANT:
+
+        The hero displays the optimized WebP thumbnail.
+
+        It does not display the original full-resolution image.
+    */
+
+    const heroImage =
+        getGamePageAssetPath(
+            featuredWallpaper.thumbnail
+        );
 
     gameHero.innerHTML = `
 
         <div class="game-hero-card">
 
             <img
-                src="../${featuredWallpaper.image}"
-                alt="${gameName} wallpapers"
-                class="game-hero-image">
+                src="${heroImage}"
+                alt="${escapeGameHtml(gameName)} wallpapers"
+                class="game-hero-image"
+                width="1280"
+                height="720"
+                decoding="async"
+                fetchpriority="high"
+                draggable="false"
+            >
 
             <div class="game-hero-overlay"></div>
 
             <div class="game-hero-content">
 
-                <nav class="breadcrumbs">
+                <nav
+                    class="breadcrumbs"
+                    aria-label="Breadcrumb"
+                >
 
-                    <a href="../index.html">
+                    <a href="../">
                         Home
                     </a>
 
                     <span>›</span>
 
-                    <a href="../index.html#games">
+                    <a href="../#games">
                         Games
                     </a>
 
                     <span>›</span>
 
                     <strong>
-                        ${gameName}
+                        ${escapeGameHtml(gameName)}
                     </strong>
 
                 </nav>
@@ -131,13 +160,14 @@ function displayGameHero(gameWallpapers) {
                 </p>
 
                 <h1>
-                    ${gameName}
+                    ${escapeGameHtml(gameName)}
                 </h1>
 
                 <p class="game-hero-description">
 
                     Explore ${gameWallpapers.length}
-                    high-quality ${gameName} wallpaper${gameWallpapers.length === 1 ? "" : "s"}
+                    high-quality ${escapeGameHtml(gameName)}
+                    wallpaper${gameWallpapers.length === 1 ? "" : "s"}
                     for desktop and laptop screens.
 
                 </p>
@@ -150,17 +180,16 @@ function displayGameHero(gameWallpapers) {
                     </span>
 
                     <span>
-                        🎮 ${gameName}
+                        🎮 ${escapeGameHtml(gameName)}
                     </span>
 
                 </div>
 
                 <a
                     href="#game-collection"
-                    class="about-button">
-
+                    class="about-button"
+                >
                     Browse Collection
-
                 </a>
 
             </div>
@@ -170,10 +199,13 @@ function displayGameHero(gameWallpapers) {
     `;
 
     const collectionSection =
-        document.querySelector(".game-wallpapers-section");
+        document.querySelector(
+            ".game-wallpapers-section"
+        );
 
     if (collectionSection) {
-        collectionSection.id = "game-collection";
+        collectionSection.id =
+            "game-collection";
     }
 
 }
@@ -185,23 +217,62 @@ function displayGameHero(gameWallpapers) {
 
 function createGameWallpaperCard(item) {
 
+    const thumbnailPath =
+        getGamePageAssetPath(item.thumbnail);
+
+    const originalPath =
+        getGamePageAssetPath(item.image);
+
+    const title =
+        escapeGameHtml(
+            item.title || "Gaming Wallpaper"
+        );
+
+    const game =
+        escapeGameHtml(
+            item.game || "Gaming"
+        );
+
+    const resolution =
+        escapeGameHtml(
+            item.resolution || "HD"
+        );
+
+    const date =
+        escapeGameHtml(
+            item.date || ""
+        );
+
+    const views =
+        Number(item.views || 0)
+            .toLocaleString();
+
+    const downloads =
+        Number(item.downloads || 0)
+            .toLocaleString();
+
     return `
 
         <article class="wallpaper-card">
 
             <a
-                href="wallpaper.html?id=${item.id}"
-                class="wallpaper-image">
+                href="wallpaper.html?id=${encodeURIComponent(item.id)}"
+                class="wallpaper-image"
+            >
 
                 <img
-                    src="../${item.thumbnail}"
-                    alt="${item.title}"
-                    loading="lazy">
+                    src="${thumbnailPath}"
+                    alt="${title}"
+                    loading="lazy"
+                    decoding="async"
+                    width="640"
+                    height="360"
+                >
 
                 <div class="image-gradient"></div>
 
                 <span class="badge">
-                    ${item.resolution}
+                    ${resolution}
                 </span>
 
             </a>
@@ -213,11 +284,11 @@ function createGameWallpaperCard(item) {
                     <div>
 
                         <h3>
-                            ${item.title}
+                            ${title}
                         </h3>
 
                         <p>
-                            ${item.game}
+                            ${game}
                         </p>
 
                     </div>
@@ -227,15 +298,15 @@ function createGameWallpaperCard(item) {
                 <div class="wallpaper-meta">
 
                     <span>
-                        👁 ${item.views}
+                        👁 ${views}
                     </span>
 
                     <span>
-                        ⬇ ${item.downloads}
+                        ⬇ ${downloads}
                     </span>
 
                     <span>
-                        📅 ${item.date}
+                        📅 ${date}
                     </span>
 
                 </div>
@@ -243,20 +314,23 @@ function createGameWallpaperCard(item) {
                 <div class="card-buttons">
 
                     <a
-                        href="wallpaper.html?id=${item.id}"
-                        class="details-btn">
-
+                        href="wallpaper.html?id=${encodeURIComponent(item.id)}"
+                        class="details-btn"
+                    >
                         View Wallpaper
-
                     </a>
 
                     <button
                         class="download-btn"
-                        data-image="../${item.image}"
-                        data-title="${item.title}">
-
+                        type="button"
+                        data-image="${originalPath}"
+                        data-title="${title}"
+                        data-id="${escapeGameHtml(item.id)}"
+                        data-game="${game}"
+                        data-category="${escapeGameHtml(item.category || "")}"
+                        data-resolution="${resolution}"
+                    >
                         Download
-
                     </button>
 
                 </div>
@@ -276,7 +350,9 @@ function createGameWallpaperCard(item) {
 
 function displayGameWallpapers(gameWallpapers) {
 
-    if (!gameWallpapersContainer) return;
+    if (!gameWallpapersContainer) {
+        return;
+    }
 
     gameWallpapersContainer.innerHTML = "";
 
@@ -287,12 +363,10 @@ function displayGameWallpapers(gameWallpapers) {
 
     }
 
-    gameWallpapers.forEach(item => {
-
-        gameWallpapersContainer.innerHTML +=
-            createGameWallpaperCard(item);
-
-    });
+    gameWallpapersContainer.innerHTML =
+        gameWallpapers
+            .map(createGameWallpaperCard)
+            .join("");
 
 }
 
@@ -306,7 +380,9 @@ function displayOtherGames(
     currentGame
 ) {
 
-    if (!otherGamesContainer) return;
+    if (!otherGamesContainer) {
+        return;
+    }
 
     otherGamesContainer.innerHTML = "";
 
@@ -328,38 +404,55 @@ function displayOtherGames(
 
     });
 
-    uniqueGames
-        .slice(0, 4)
-        .forEach(game => {
+    otherGamesContainer.innerHTML =
+        uniqueGames
+            .slice(0, 4)
+            .map(game => {
 
-            otherGamesContainer.innerHTML += `
+                const thumbnailPath =
+                    getGamePageAssetPath(
+                        game.thumbnail
+                    );
 
-                <a
-                    href="game.html?game=${encodeURIComponent(game.game)}"
-                    class="game-card">
+                const gameName =
+                    escapeGameHtml(
+                        game.game || "Gaming"
+                    );
 
-                    <img
-                        src="../${game.thumbnail}"
-                        alt="${game.game} gaming wallpapers"
-                        loading="lazy">
+                return `
 
-                    <div class="game-overlay">
+                    <a
+                        href="game.html?game=${encodeURIComponent(game.game)}"
+                        class="game-card"
+                    >
 
-                        <h3>
-                            ${game.game}
-                        </h3>
+                        <img
+                            src="${thumbnailPath}"
+                            alt="${gameName} gaming wallpapers"
+                            loading="lazy"
+                            decoding="async"
+                            width="640"
+                            height="360"
+                        >
 
-                        <span>
-                            Explore Wallpapers →
-                        </span>
+                        <div class="game-overlay">
 
-                    </div>
+                            <h3>
+                                ${gameName}
+                            </h3>
 
-                </a>
+                            <span>
+                                Explore Wallpapers →
+                            </span>
 
-            `;
+                        </div>
 
-        });
+                    </a>
+
+                `;
+
+            })
+            .join("");
 
 }
 
@@ -373,15 +466,28 @@ document.addEventListener(
     function (event) {
 
         const downloadButton =
-            event.target.closest(".download-btn");
+            event.target.closest(
+                ".download-btn"
+            );
 
-        if (!downloadButton) return;
+        if (!downloadButton) {
+            return;
+        }
 
         const image =
             downloadButton.dataset.image;
 
         const title =
-            downloadButton.dataset.title;
+            downloadButton.dataset.title ||
+            "pixelquest-wallpaper";
+
+        if (!image) {
+            return;
+        }
+
+        trackGamePageDownload(
+            downloadButton
+        );
 
         const link =
             document.createElement("a");
@@ -389,9 +495,10 @@ document.addEventListener(
         link.href = image;
 
         link.download =
-            title
-                .toLowerCase()
-                .replaceAll(" ", "-");
+            createGameDownloadFilename(
+                title,
+                image
+            );
 
         document.body.appendChild(link);
 
@@ -401,6 +508,45 @@ document.addEventListener(
 
     }
 );
+
+
+// ======================================
+// Google Analytics download tracking
+// ======================================
+
+function trackGamePageDownload(
+    downloadButton
+) {
+
+    if (typeof window.gtag !== "function") {
+        return;
+    }
+
+    window.gtag(
+        "event",
+        "wallpaper_download",
+        {
+            wallpaper_id:
+                downloadButton.dataset.id || "",
+
+            wallpaper_title:
+                downloadButton.dataset.title || "",
+
+            game:
+                downloadButton.dataset.game || "",
+
+            category:
+                downloadButton.dataset.category || "",
+
+            resolution:
+                downloadButton.dataset.resolution || "",
+
+            download_location:
+                "game_page"
+        }
+    );
+
+}
 
 
 // ======================================
@@ -442,18 +588,19 @@ function showGameNotFound() {
 
             <div class="page-message">
 
-                <h1>Game Not Found</h1>
+                <h1>
+                    Game Not Found
+                </h1>
 
                 <p>
                     We could not find wallpapers for this game.
                 </p>
 
                 <a
-                    href="../index.html#games"
-                    class="details-home-btn">
-
+                    href="../#games"
+                    class="details-home-btn"
+                >
                     Browse Games
-
                 </a>
 
             </div>
@@ -463,7 +610,10 @@ function showGameNotFound() {
     }
 
     if (gameWallpapersContainer) {
-        gameWallpapersContainer.innerHTML = "";
+
+        gameWallpapersContainer.innerHTML =
+            "";
+
     }
 
 }
@@ -475,28 +625,106 @@ function showGameNotFound() {
 
 function showGameLoadError() {
 
-    if (!gameHero) return;
+    if (!gameHero) {
+        return;
+    }
 
     gameHero.innerHTML = `
 
         <div class="page-message">
 
-            <h1>Games could not be loaded</h1>
+            <h1>
+                Games Could Not Be Loaded
+            </h1>
 
             <p>
                 Please return to the homepage and try again.
             </p>
 
             <a
-                href="../index.html"
-                class="details-home-btn">
-
+                href="../"
+                class="details-home-btn"
+            >
                 Return Home
-
             </a>
 
         </div>
 
     `;
+
+}
+
+
+// ======================================
+// Helper: asset path
+// ======================================
+
+function getGamePageAssetPath(path) {
+
+    if (!path) {
+        return "";
+    }
+
+    if (
+        path.startsWith("http://") ||
+        path.startsWith("https://") ||
+        path.startsWith("../")
+    ) {
+        return path;
+    }
+
+    return `../${path}`;
+
+}
+
+
+// ======================================
+// Helper: download filename
+// ======================================
+
+function createGameDownloadFilename(
+    title,
+    imagePath
+) {
+
+    const cleanTitle =
+        String(title)
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+
+    const cleanImagePath =
+        String(imagePath)
+            .split("?")[0]
+            .split("#")[0];
+
+    const extensionMatch =
+        cleanImagePath.match(
+            /\.([a-zA-Z0-9]+)$/
+        );
+
+    const extension =
+        extensionMatch
+            ? extensionMatch[1]
+            : "png";
+
+    return `${cleanTitle}.${extension}`;
+
+}
+
+
+// ======================================
+// Helper: escape HTML
+// ======================================
+
+function escapeGameHtml(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
 }
