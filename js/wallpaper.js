@@ -4,7 +4,11 @@
    PIXELQUEST WALLPAPER DETAILS PAGE
 ========================================= */
 
-document.addEventListener("DOMContentLoaded", loadWallpaperPage);
+document.addEventListener(
+    "DOMContentLoaded",
+    loadWallpaperPage
+);
+
 
 async function loadWallpaperPage() {
     const detailsContainer =
@@ -18,7 +22,8 @@ async function loadWallpaperPage() {
     }
 
     try {
-        const response = await fetch("../wallpapers.json");
+        const response =
+            await fetch("../wallpapers.json");
 
         if (!response.ok) {
             throw new Error(
@@ -26,7 +31,8 @@ async function loadWallpaperPage() {
             );
         }
 
-        const wallpapers = await response.json();
+        const wallpapers =
+            await response.json();
 
         if (!Array.isArray(wallpapers)) {
             throw new Error(
@@ -34,15 +40,22 @@ async function loadWallpaperPage() {
             );
         }
 
-        const wallpaperId = getWallpaperId();
+        const wallpaperId =
+            getWallpaperId();
 
-        const wallpaper = wallpapers.find(
-            (item) =>
-                String(item.id) === String(wallpaperId)
-        );
+        const wallpaper =
+            wallpapers.find(function (item) {
+                return (
+                    String(item.id) ===
+                    String(wallpaperId)
+                );
+            });
 
         if (!wallpaper) {
-            showWallpaperNotFound(detailsContainer);
+            showWallpaperNotFound(
+                detailsContainer
+            );
+
             return;
         }
 
@@ -60,7 +73,10 @@ async function loadWallpaperPage() {
         );
 
     } catch (error) {
-        console.error(error);
+        console.error(
+            "Wallpaper page error:",
+            error
+        );
 
         detailsContainer.innerHTML = `
             <div class="category-empty-message">
@@ -88,12 +104,14 @@ async function loadWallpaperPage() {
 
 
 /* =========================================
-   GET WALLPAPER ID FROM URL
+   GET WALLPAPER ID
 ========================================= */
 
 function getWallpaperId() {
     const urlParameters =
-        new URLSearchParams(window.location.search);
+        new URLSearchParams(
+            window.location.search
+        );
 
     return urlParameters.get("id");
 }
@@ -108,42 +126,89 @@ function renderWallpaperDetails(
     container
 ) {
     const title =
-        escapeHtml(wallpaper.title || "Gaming Wallpaper");
+        escapeWallpaperHtml(
+            wallpaper.title ||
+            "Gaming Wallpaper"
+        );
 
     const game =
-        escapeHtml(wallpaper.game || "Unknown Game");
+        escapeWallpaperHtml(
+            wallpaper.game ||
+            "Unknown Game"
+        );
 
     const category =
-        escapeHtml(wallpaper.category || "Gaming");
+        escapeWallpaperHtml(
+            wallpaper.category ||
+            "Gaming"
+        );
 
     const resolution =
-        escapeHtml(wallpaper.resolution || "HD");
+        escapeWallpaperHtml(
+            wallpaper.resolution ||
+            "HD"
+        );
 
     const date =
-        escapeHtml(wallpaper.date || "Not available");
+        escapeWallpaperHtml(
+            wallpaper.date ||
+            "Not available"
+        );
 
     const views =
-        Number(wallpaper.views || 0).toLocaleString();
+        Number(
+            wallpaper.views || 0
+        ).toLocaleString();
 
     const downloads =
-        Number(wallpaper.downloads || 0).toLocaleString();
+        Number(
+            wallpaper.downloads || 0
+        ).toLocaleString();
 
-    /*
-        IMPORTANT:
+    const description =
+        escapeWallpaperHtml(
+            wallpaper.description ||
+            createFallbackDescription(
+                wallpaper
+            )
+        );
 
-        wallpaper.thumbnail is displayed on the page.
+    const aspectRatio =
+        escapeWallpaperHtml(
+            wallpaper.aspectRatio ||
+            getAspectRatioFromResolution(
+                wallpaper.resolution
+            )
+        );
 
-        wallpaper.image is used only by the download button.
-    */
+    const fileFormat =
+        escapeWallpaperHtml(
+            wallpaper.format ||
+            getFileExtension(
+                wallpaper.image
+            )
+        );
+
+    const bestFor =
+        escapeWallpaperHtml(
+            wallpaper.bestFor ||
+            "Desktop and laptop screens"
+        );
 
     const previewPath =
-        getPageAssetPath(wallpaper.thumbnail);
+        getPageAssetPath(
+            wallpaper.thumbnail
+        );
 
     const originalPath =
-        getPageAssetPath(wallpaper.image);
+        getPageAssetPath(
+            wallpaper.image
+        );
 
     const downloadFilename =
-        createDownloadFilename(wallpaper);
+        createDownloadFilename(
+            wallpaper
+        );
 
     container.innerHTML = `
 
@@ -158,19 +223,17 @@ function renderWallpaperDetails(
                     Home
                 </a>
 
-                <span>
-                    ›
-                </span>
+                <span>›</span>
 
-                <a href="game.html?game=${encodeURIComponent(
-                    wallpaper.game || ""
-                )}">
+                <a
+                    href="game.html?game=${encodeURIComponent(
+                        wallpaper.game || ""
+                    )}"
+                >
                     ${game}
                 </a>
 
-                <span>
-                    ›
-                </span>
+                <span>›</span>
 
                 <strong>
                     ${title}
@@ -211,6 +274,21 @@ function renderWallpaperDetails(
                 <p class="wallpaper-game-name">
                     From ${game}
                 </p>
+
+                <section
+                    class="wallpaper-description-section"
+                    aria-labelledby="wallpaper-description-title"
+                >
+
+                    <h2 id="wallpaper-description-title">
+                        About This Wallpaper
+                    </h2>
+
+                    <p>
+                        ${description}
+                    </p>
+
+                </section>
 
                 <div class="wallpaper-information-grid">
 
@@ -264,6 +342,46 @@ function renderWallpaperDetails(
 
                 </div>
 
+                <div class="wallpaper-extra-information">
+
+                    <div>
+
+                        <span>
+                            Aspect Ratio
+                        </span>
+
+                        <strong>
+                            ${aspectRatio}
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            File Format
+                        </span>
+
+                        <strong>
+                            ${fileFormat}
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Best For
+                        </span>
+
+                        <strong>
+                            ${bestFor}
+                        </strong>
+
+                    </div>
+
+                </div>
+
                 <div class="wallpaper-action-buttons">
 
                     <a
@@ -297,7 +415,9 @@ function renderWallpaperDetails(
         </article>
     `;
 
-    setupDownloadTracking(wallpaper);
+    setupDownloadTracking(
+        wallpaper
+    );
 }
 
 
@@ -305,7 +425,9 @@ function renderWallpaperDetails(
    DOWNLOAD TRACKING
 ========================================= */
 
-function setupDownloadTracking(wallpaper) {
+function setupDownloadTracking(
+    wallpaper
+) {
     const downloadButton =
         document.getElementById(
             "full-resolution-download"
@@ -329,7 +451,10 @@ function setupDownloadTracking(wallpaper) {
 function trackDownloadWithGoogleAnalytics(
     wallpaper
 ) {
-    if (typeof window.gtag !== "function") {
+    if (
+        typeof window.gtag !==
+        "function"
+    ) {
         return;
     }
 
@@ -338,7 +463,9 @@ function trackDownloadWithGoogleAnalytics(
         "wallpaper_download",
         {
             wallpaper_id:
-                String(wallpaper.id || ""),
+                String(
+                    wallpaper.id || ""
+                ),
 
             wallpaper_title:
                 wallpaper.title || "",
@@ -371,10 +498,12 @@ function renderRelatedWallpapers(
 
     const relatedWallpapers =
         allWallpapers
-            .filter((wallpaper) => {
+            .filter(function (wallpaper) {
                 const isDifferentWallpaper =
                     String(wallpaper.id) !==
-                    String(currentWallpaper.id);
+                    String(
+                        currentWallpaper.id
+                    );
 
                 const sameGame =
                     wallpaper.game ===
@@ -386,12 +515,17 @@ function renderRelatedWallpapers(
 
                 return (
                     isDifferentWallpaper &&
-                    (sameGame || sameCategory)
+                    (
+                        sameGame ||
+                        sameCategory
+                    )
                 );
             })
             .slice(0, 4);
 
-    if (relatedWallpapers.length === 0) {
+    if (
+        relatedWallpapers.length === 0
+    ) {
         container.innerHTML = `
             <p class="category-empty-message">
                 No related wallpapers are available yet.
@@ -403,23 +537,38 @@ function renderRelatedWallpapers(
 
     container.innerHTML =
         relatedWallpapers
-            .map(createRelatedWallpaperCard)
+            .map(
+                createRelatedWallpaperCard
+            )
             .join("");
 }
 
 
-function createRelatedWallpaperCard(wallpaper) {
+function createRelatedWallpaperCard(
+    wallpaper
+) {
     const title =
-        escapeHtml(wallpaper.title || "Gaming Wallpaper");
+        escapeWallpaperHtml(
+            wallpaper.title ||
+            "Gaming Wallpaper"
+        );
 
     const game =
-        escapeHtml(wallpaper.game || "Gaming");
+        escapeWallpaperHtml(
+            wallpaper.game ||
+            "Gaming"
+        );
 
     const resolution =
-        escapeHtml(wallpaper.resolution || "HD");
+        escapeWallpaperHtml(
+            wallpaper.resolution ||
+            "HD"
+        );
 
     const thumbnailPath =
-        getPageAssetPath(wallpaper.thumbnail);
+        getPageAssetPath(
+            wallpaper.thumbnail
+        );
 
     return `
 
@@ -485,22 +634,36 @@ function createRelatedWallpaperCard(wallpaper) {
    UPDATE PAGE SEO
 ========================================= */
 
-function updatePageMetadata(wallpaper) {
+function updatePageMetadata(
+    wallpaper
+) {
     const title =
-        wallpaper.title || "Gaming Wallpaper";
+        wallpaper.title ||
+        "Gaming Wallpaper";
 
     const game =
-        wallpaper.game || "Gaming";
+        wallpaper.game ||
+        "Gaming";
 
     const resolution =
-        wallpaper.resolution || "HD";
+        wallpaper.resolution ||
+        "HD";
 
     document.title =
         `${title} ${resolution} Wallpaper | PixelQuest`;
 
     const description =
-        `Download ${title}, a free ${resolution} ` +
-        `${game} wallpaper for desktop, laptop and mobile.`;
+        wallpaper.description
+            ? String(
+                wallpaper.description
+            )
+                .replace(/\s+/g, " ")
+                .trim()
+                .slice(0, 155)
+            : (
+                `Download ${title}, a free ${resolution} ` +
+                `${game} wallpaper for desktop, laptop and mobile.`
+            );
 
     let metaDescription =
         document.querySelector(
@@ -509,7 +672,9 @@ function updatePageMetadata(wallpaper) {
 
     if (!metaDescription) {
         metaDescription =
-            document.createElement("meta");
+            document.createElement(
+                "meta"
+            );
 
         metaDescription.setAttribute(
             "name",
@@ -525,11 +690,15 @@ function updatePageMetadata(wallpaper) {
         "content",
         description
     );
+
+    updateCanonicalUrl(
+        wallpaper.id
+    );
 }
 
 
 /* =========================================
-   HELPERS
+   ASSET PATHS
 ========================================= */
 
 function getPageAssetPath(path) {
@@ -537,19 +706,33 @@ function getPageAssetPath(path) {
         return "";
     }
 
+    const cleanPath =
+        String(path).trim();
+
     if (
-        path.startsWith("http://") ||
-        path.startsWith("https://") ||
-        path.startsWith("../")
+        cleanPath.startsWith(
+            "http://"
+        ) ||
+        cleanPath.startsWith(
+            "https://"
+        ) ||
+        cleanPath.startsWith("../") ||
+        cleanPath.startsWith("/")
     ) {
-        return path;
+        return cleanPath;
     }
 
-    return `../${path}`;
+    return `../${cleanPath}`;
 }
 
 
-function createDownloadFilename(wallpaper) {
+/* =========================================
+   DOWNLOAD FILENAME
+========================================= */
+
+function createDownloadFilename(
+    wallpaper
+) {
     const title =
         String(
             wallpaper.title ||
@@ -557,25 +740,208 @@ function createDownloadFilename(wallpaper) {
         )
             .toLowerCase()
             .trim()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-+|-+$/g, "");
+            .replace(
+                /[^a-z0-9]+/g,
+                "-"
+            )
+            .replace(
+                /^-+|-+$/g,
+                ""
+            );
 
     const originalPath =
-        String(wallpaper.image || "");
+        String(
+            wallpaper.image || ""
+        );
 
     const extensionMatch =
-        originalPath.match(/\.([a-zA-Z0-9]+)$/);
+        originalPath.match(
+            /\.([a-zA-Z0-9]+)(?:[?#].*)?$/
+        );
 
     const extension =
         extensionMatch
             ? extensionMatch[1]
+                .toLowerCase()
             : "png";
 
     return `${title}.${extension}`;
 }
 
 
-function showWallpaperNotFound(container) {
+/* =========================================
+   FALLBACK DESCRIPTION
+========================================= */
+
+function createFallbackDescription(
+    wallpaper
+) {
+    const title =
+        wallpaper.title ||
+        "This gaming wallpaper";
+
+    const game =
+        wallpaper.game ||
+        "the featured game";
+
+    const category =
+        wallpaper.category ||
+        "gaming";
+
+    const resolution =
+        wallpaper.resolution ||
+        "high-resolution";
+
+    return (
+        `${title} is a ${String(category).toLowerCase()} ` +
+        `wallpaper from ${game}. It is available in ${resolution} ` +
+        `quality and is suitable for desktop and laptop screens. ` +
+        `Download the original image for the best clarity and explore ` +
+        `the related section for more wallpapers from the same game ` +
+        `or category.`
+    );
+}
+
+
+/* =========================================
+   ASPECT RATIO
+========================================= */
+
+function getAspectRatioFromResolution(
+    resolution
+) {
+    const value =
+        String(
+            resolution || ""
+        )
+            .replace(/\s/g, "")
+            .replace("×", "x");
+
+    const match =
+        value.match(
+            /^(\d+)x(\d+)$/i
+        );
+
+    if (!match) {
+        return "16:9";
+    }
+
+    const width =
+        Number(match[1]);
+
+    const height =
+        Number(match[2]);
+
+    if (
+        !width ||
+        !height
+    ) {
+        return "16:9";
+    }
+
+    const divisor =
+        getGreatestCommonDivisor(
+            width,
+            height
+        );
+
+    return (
+        `${width / divisor}:` +
+        `${height / divisor}`
+    );
+}
+
+
+function getGreatestCommonDivisor(
+    firstNumber,
+    secondNumber
+) {
+    let first =
+        Math.abs(firstNumber);
+
+    let second =
+        Math.abs(secondNumber);
+
+    while (second) {
+        const remainder =
+            first % second;
+
+        first =
+            second;
+
+        second =
+            remainder;
+    }
+
+    return first || 1;
+}
+
+
+/* =========================================
+   FILE FORMAT
+========================================= */
+
+function getFileExtension(path) {
+    const match =
+        String(
+            path || ""
+        ).match(
+            /\.([a-zA-Z0-9]+)(?:[?#].*)?$/
+        );
+
+    return match
+        ? match[1].toUpperCase()
+        : "IMAGE";
+}
+
+
+/* =========================================
+   CANONICAL URL
+========================================= */
+
+function updateCanonicalUrl(
+    wallpaperId
+) {
+    const canonicalUrl =
+        `https://pixelquestwallpapers.com/pages/wallpaper.html?id=${encodeURIComponent(
+            wallpaperId
+        )}`;
+
+    let canonicalLink =
+        document.querySelector(
+            'link[rel="canonical"]'
+        );
+
+    if (!canonicalLink) {
+        canonicalLink =
+            document.createElement(
+                "link"
+            );
+
+        canonicalLink.setAttribute(
+            "rel",
+            "canonical"
+        );
+
+        document.head.appendChild(
+            canonicalLink
+        );
+    }
+
+    canonicalLink.setAttribute(
+        "href",
+        canonicalUrl
+    );
+}
+
+
+/* =========================================
+   WALLPAPER NOT FOUND
+========================================= */
+
+function showWallpaperNotFound(
+    container
+) {
     container.innerHTML = `
 
         <div class="category-empty-message">
@@ -601,11 +967,18 @@ function showWallpaperNotFound(container) {
 }
 
 
-function escapeHtml(value) {
+/* =========================================
+   SAFE HTML OUTPUT
+========================================= */
+
+function escapeWallpaperHtml(value) {
     return String(value)
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 }
