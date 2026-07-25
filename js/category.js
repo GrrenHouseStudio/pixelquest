@@ -424,7 +424,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
 
                     <button
-                        class="favorite-btn"
+                        class="fav-btn"
                         type="button"
                         data-wallpaper-id="${wallpaper.id}"
                         aria-label="Add ${escapeHtml(wallpaper.title)} to favorites"
@@ -495,7 +495,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const favoriteButton =
-            card.querySelector(".favorite-btn");
+            card.querySelector(".fav-btn");
 
         if (favoriteButton) {
 
