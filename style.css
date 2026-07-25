@@ -17,3 +17,52 @@ footer{padding:75px 0 25px;border-top:1px solid rgba(255,255,255,.07);background
 @media(max-width:800px){.desktop-nav{display:none}.mobile-menu-button{display:block}.mobile-nav{display:block}.container{width:100%;padding:0 16px}.wallpaper-information-grid,.detail-info-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.section-title,.section-header,.search-results-header{align-items:flex-start;flex-direction:column}.sort-control,.sort-select-wrapper,#sort-select{width:100%}.search-page-form{flex-direction:column}.search-page-form button{width:100%}}
 @media(max-width:600px){section{padding:62px 0}section h2{font-size:30px}.logo{font-size:24px}.hero{padding:55px 0 45px}.hero h1{font-size:38px}.search-box{flex-direction:column}.search-box button{width:100%}.hero-featured-image{height:230px}.hero-stats{padding:16px 10px}.wallpaper-grid,.games-grid,#games-grid{grid-template-columns:1fr}.wallpaper-image,.wallpaper-card-image{height:205px}.card-buttons,.wallpaper-actions{grid-template-columns:1fr}.about-stats,.about-page-features{grid-template-columns:1fr}.wallpaper-information-grid,.detail-info-grid{grid-template-columns:1fr}.wallpaper-action-buttons,.detail-actions{flex-direction:column}.game-hero-content{justify-content:flex-end;padding:25px 20px}.game-hero-content h1{font-size:36px}.footer-grid{grid-template-columns:1fr}.footer-bottom{flex-direction:column;text-align:center}}
+/* Favourite buttons on every wallpaper page */
+
+.fav-btn,
+.favorite-btn {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+
+    font-size: 19px;
+    line-height: 1;
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.fav-btn:hover,
+.favorite-btn:hover {
+    background: rgba(124, 92, 255, 0.18);
+    border-color: rgba(124, 92, 255, 0.7);
+    transform: scale(1.08);
+}
+
+.fav-btn:active,
+.favorite-btn:active {
+    transform: scale(0.95);
+}
+
+.fav-btn:focus-visible,
+.favorite-btn:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+}
