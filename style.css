@@ -66,3 +66,41 @@ footer{padding:75px 0 25px;border-top:1px solid rgba(255,255,255,.07);background
     outline: 2px solid var(--cyan);
     outline-offset: 3px;
 }
+/* ======================================
+   WALLPAPER EXTRA INFORMATION
+====================================== */
+
+.wallpaper-extra-information {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 22px 0;
+}
+
+.wallpaper-extra-information > div {
+    padding: 16px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.025);
+    text-align: center;
+}
+
+.wallpaper-extra-information span {
+    display: block;
+    margin-bottom: 5px;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.wallpaper-extra-information strong {
+    display: block;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+    .wallpaper-extra-information {
+        grid-template-columns: 1fr;
+    }
+}
