@@ -192,7 +192,7 @@ function renderWallpaperDetails(
     const bestFor =
         escapeWallpaperHtml(
             wallpaper.bestFor ||
-            "Desktop and laptop screens"
+            "Desktop, laptop and mobile screens"
         );
 
     const previewPath =
@@ -795,7 +795,7 @@ function createFallbackDescription(
     return (
         `${title} is a ${String(category).toLowerCase()} ` +
         `wallpaper from ${game}. It is available in ${resolution} ` +
-        `quality and is suitable for desktop and laptop screens. ` +
+        `quality and is suitable for desktop, laptop and mobile screens. ` +
         `Download the original image for the best clarity and explore ` +
         `the related section for more wallpapers from the same game ` +
         `or category.`
