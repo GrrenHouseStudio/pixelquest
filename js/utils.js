@@ -3,54 +3,47 @@
 // ======================================
 
 function downloadWallpaper(image, title) {
+    if (!image) {
+        console.error("Download image path is missing.");
+        return;
+    }
 
     const link = document.createElement("a");
 
     link.href = image;
-
-    link.download = title
+    link.download = String(title || "pixelquest-wallpaper")
         .toLowerCase()
-        .replaceAll(" ", "-");
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "");
 
     document.body.appendChild(link);
-
     link.click();
-
     link.remove();
-    
+}
+
+
 // ======================================
-// Image loading animation
+// Image Loading Animation
 // ======================================
 
 function activateImageLoadingAnimation() {
+    const images = document.querySelectorAll(
+        ".wallpaper-image img, .game-card img"
+    );
 
-    const images =
-        document.querySelectorAll(
-            ".wallpaper-image img, .game-card img"
-        );
-
-    images.forEach(image => {
-
+    images.forEach(function (image) {
         if (image.complete) {
-
             image.classList.add("image-loaded");
-
-        } else {
-
-            image.addEventListener(
-                "load",
-                function () {
-
-                    image.classList.add("image-loaded");
-
-                },
-                { once: true }
-            );
-
+            return;
         }
 
+        image.addEventListener(
+            "load",
+            function () {
+                image.classList.add("image-loaded");
+            },
+            { once: true }
+        );
     });
-
-}
-
 }
